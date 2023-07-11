@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 )
@@ -50,6 +53,10 @@ func customErr(c *fiber.Ctx, code int, error, message string) error {
 }
 
 func main() {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8000"
+	}
 	app := fiber.New()
 
 	app.Use(cors.New())
@@ -81,7 +88,8 @@ func main() {
 		})
 	})
 
-	err := app.Listen("0.0.0.0:8000")
+	// err := app.Listen("0.0.0.0:8000")
+	err := app.Listen(fmt.Sprintf("0.0.0.0:%s", port))
 	if err != nil {
 		panic(err)
 	}
